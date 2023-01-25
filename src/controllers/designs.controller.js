@@ -1,4 +1,4 @@
-const Design = require("../models/designs.model");
+import Design from '../models/designs.model.js'
 
 let response = {
     msg: "",
@@ -7,7 +7,8 @@ let response = {
 
 
 // METODO PARA CREACION DE DATOS
-exports.create = function(req,res){
+export const create = ( req, res ) => {
+
     let design = new Design({
         design_id: req.body.design_id,
         nombre: req.body.nombre,
@@ -15,7 +16,7 @@ exports.create = function(req,res){
         urlimg: req.body.urlimg
     })
 
-    design.save(function(err){
+    design.save( (err) => {
         if(err){
             console.log = false,
             response.exito = false,
@@ -33,7 +34,7 @@ exports.create = function(req,res){
 }
 
 // METODO PARA BUSCAR
-exports.find = function(req,res){
+export const find = ( req, res ) => {
     Design.find(function(err, designs){
         //
         res.json(designs)
@@ -42,15 +43,15 @@ exports.find = function(req,res){
 
 
 //METODO PARA BUSCAR UNO
-exports.findOne = function(req,res){
-    Design.findOne({_id: req.params.id}, function(err, design){
+export const findOne = ( req, res ) => {
+    Design.findOne({_id: req.params.id}, (err, design) => {
         res.json(design)
     })
 }
 
 
 //METODO UPDATE
-exports.update = function(req,res){
+export const update = ( req, res ) => {
     let design = {
         design_id: req.body.design_id,
         nombre: req.body.nombre,
@@ -58,7 +59,7 @@ exports.update = function(req,res){
         urlimg: req.body.urlimg
     }
 
-    Design.findByIdAndUpdate(req.params.id, {$set: design}, function(err){
+    Design.findByIdAndUpdate(req.params.id, {$set: design}, (err) => {
         if(err){
             console.log(err)
             response.exito = false,
@@ -76,8 +77,8 @@ exports.update = function(req,res){
 
 
 //METODO REMOVE
-exports.remove = function(req,res){
-    Design.findByIdAndRemove({_id:req.params.id}, function(err){
+export const remove = ( req, res ) => {
+    Design.findByIdAndRemove({_id:req.params.id}, (err) => {
         if(err){
             console.log(err)
             response.exito = false

@@ -1,4 +1,4 @@
-const Empleado = require("../models/empleados.model");
+import EmpleadosSchema  from '../models/empleados.model.js';
 
 let response = {
     msg: "",
@@ -7,8 +7,8 @@ let response = {
 
 
 // METODO PARA CREACION DE DATOS
-exports.create = function(req,res){
-    let empleado = new Empleado({
+export const create = ( req, res ) => {
+    let empleado = new EmpleadosSchema({
         nombre: req.body.nombre,
         apellido_p: req.body.apellido_p,
         apellido_m: req.body.apellido_m,
@@ -17,7 +17,7 @@ exports.create = function(req,res){
         direccion: req.body.direccion
     })
 
-    empleado.save(function(err){
+    empleado.save( (err) => {
         if(err){
             console.log = false,
             response.exito = false,
@@ -34,23 +34,35 @@ exports.create = function(req,res){
 }
 
 // METODO PARA BUSCAR
-exports.find = function(req,res){
-    Empleado.find(function(err, empleados){
+export const find = ( req, res ) => {
+    EmpleadosSchema.find( (err, empleados) => {
+        if(err){
+            console.log(err)
+            response.exito = false,
+            response.msg = "Error al buscar los empleados"
+            res.json(response)
+            return;
+        }
+
+        response.exito = true,
+        response.msg = "Empleados encontrados correctamente"
         res.json(empleados)
     })
 }
 
 
 //METODO PARA BUSCAR UNO
-exports.findOne = function(req,res){
-    Empleado.findOne({_id: req.params.id}, function(err, empleado){
+export const findOne = (req,res) => {
+    EmpleadosSchema.findOne({
+        _id: req.params.id
+    }, (err, empleado) => {
         res.json(empleado)
     })
 }
 
 
 //METODO UPDATE
-exports.update = function(req,res){
+export const update = ( req, res ) => {
     let empleado = {
         nombre: req.body.nombre,
         apellido_p: req.body.apellido_p,
@@ -60,26 +72,25 @@ exports.update = function(req,res){
         direccion: req.body.direccion
     }
 
-    Empleado.findByIdAndUpdate(req.params.id, {$set: empleado}, function(err){
+    EmpleadosSchema.findByIdAndUpdate({_id:req.params.id}, empleado, (err) => {
         if(err){
             console.log(err)
-            response.exito = false,
-            response.msg = "Error al modificar el empleado"
+            response.exito = false
+            response.msg = "Error al Actualizar Empleado"
             res.json(response)
             return;
         }
 
         response.exito = true,
-        response.msg = "El empleado se modifico correctamente"
+        response.msg = "Empleado Actualizado Correctamente"
         res.json(response)
-
     })
 }
 
 
 //METODO REMOVE
-exports.remove = function(req,res){
-    Empleado.findByIdAndRemove({_id:req.params.id}, function(err){
+export const remove = ( req, res ) => {
+    EmpleadosSchema.findByIdAndRemove({_id:req.params.id}, (err) => {
         if(err){
             console.log(err)
             response.exito = false

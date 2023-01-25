@@ -1,23 +1,21 @@
-const User = require("../models/users.model");
-const crypto = require("crypto")
-const jwt = require("jsonwebtoken")
+import  User from "../models/users.model.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
-exports.login = function(req, res, next){
+export const login = (req, res, next) => {
 
     let hashedpass = crypto.createHash("sha512").update(req.body.pass).digest("hex");
 
-    User.findOne({ user: req.body.user, pass: hashedpass}, function(err, user){
+    User.findOne({ user: req.body.user, pass: hashedpass}, (err, user) => {
         let response = {token: null}
 
         if(user !== null){
             response.token = jwt.sign({
                 id: user._id,
                 user: user.user
-            }, "__recret__", {expiresIn:'12h'}
+            }, "__recret__", {expiresIn:'2h'}
             )
         }
         res.json(response);
-
     })
-
 }
