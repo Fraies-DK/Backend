@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const host = "localhost";
 const port = "27017";
-const db = "fraies-db";
+const db = "fraies";
 
 const mongoConnect = () => {
     const mongoStringConnection = `mongodb://${host}:${port}/${db}`;

@@ -13,9 +13,23 @@ export const login = (req, res, next) => {
             response.token = jwt.sign({
                 id: user._id,
                 user: user.user
-            }, "__recret__", {expiresIn:'2h'}
-            )
+            }, "__recret__", {
+                expiresIn:'2h'
+            })
         }
         res.json(response);
+    })
+}
+
+export const createUser = (req, res, next) => {
+    let hashedpass = crypto.createHash("sha512").update(req.body.pass).digest("hex");
+
+    let user = new User({
+        user: req.body.user,
+        pass: hashedpass
+    })
+
+    user.save((err, user) => {
+        res.json(user);
     })
 }
