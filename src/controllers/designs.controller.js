@@ -10,7 +10,6 @@ let response = {
 export const create = ( req, res ) => {
 
     let design = new Design({
-        design_id: req.body.design_id,
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
         urlimg: req.body.urlimg
@@ -25,7 +24,7 @@ export const create = ( req, res ) => {
             return;
         }
 
-        response.exito = false,
+        response.exito = true,
         response.msg = "El Diseño se gaurdo correctamente"
         //ESTADO 201 - CREATED
         res.status(201).json(response)
@@ -35,8 +34,7 @@ export const create = ( req, res ) => {
 
 // METODO PARA BUSCAR
 export const find = ( req, res ) => {
-    Design.find(function(err, designs){
-        //
+    Design.find( (err, designs) => {
         res.json(designs)
     })
 }
@@ -44,7 +42,9 @@ export const find = ( req, res ) => {
 
 //METODO PARA BUSCAR UNO
 export const findOne = ( req, res ) => {
-    Design.findOne({_id: req.params.id}, (err, design) => {
+    Design.findOne({
+        _id: req.params.id
+    }, (err, design) => {
         res.json(design)
     })
 }
